@@ -26,6 +26,7 @@ import yaml
 from pathlib import Path
 import json
 import math
+import re
 from typing import Dict, List, Any, Optional
 
 # Initialize FastMCP server
@@ -572,6 +573,115 @@ def _splash_select_vocabulary(state: Dict[str, float]) -> Dict[str, List[str]]:
         ]
         selected[category] = list(dict.fromkeys(neighbors))  # deduplicate
     return selected
+
+
+# ============================================================================
+# Phase 2.8: Aesthetic Decomposition Helpers
+# ============================================================================
+#
+# Inverse of the generative pipeline: text description → domain coordinates.
+# Layer 2: deterministic, 0 LLM tokens.
+# Uses keyword matching against SPLASH_VISUAL_TYPES to recover coordinates.
+
+_SPLASH_STOP_WORDS = frozenset({
+    'a', 'an', 'the', 'in', 'on', 'at', 'to', 'of', 'for', 'with',
+    'by', 'from', 'and', 'or', 'but', 'as', 'is', 'are', 'was', 'were',
+    'be', 'been', 'being', 'has', 'have', 'had', 'do', 'does', 'did',
+    'no', 'not', 'all', 'its', 'this', 'that', 'into', 'over',
+})
+
+
+def _splash_extract_fragments(keyword: str) -> List[str]:
+    """Extract matchable sub-phrases from a keyword string.
+
+    Sliding window of 2-4 words plus full keyword (if 3+ words).
+    Skips fragments that are mostly stop words.
+    """
+    words = keyword.lower().split()
+    fragments = []
+
+    if len(words) >= 3:
+        fragments.append(keyword.lower())
+
+    for window_size in [4, 3, 2]:
+        for i in range(len(words) - window_size + 1):
+            frag = ' '.join(words[i:i + window_size])
+            content_words = [w for w in words[i:i + window_size]
+                             if len(w) > 3 and w not in _SPLASH_STOP_WORDS]
+            if len(content_words) >= 1:
+                fragments.append(frag)
+
+    return fragments
+
+
+def _splash_score_visual_type(
+    vtype_data: Dict,
+    words: set,
+    full_text: str,
+    substring_weight: float = 1.0,
+    word_overlap_weight: float = 0.3,
+    optical_weight: float = 0.5,
+) -> tuple:
+    """Score a visual type against input text. Returns (score, matched_fragments)."""
+    score = 0.0
+    matched = []
+
+    # Keyword fragment matching
+    for keyword in vtype_data.get("keywords", []):
+        fragments = _splash_extract_fragments(keyword)
+        best_frag_score = 0.0
+        best_frag = None
+
+        for frag in fragments:
+            if frag in full_text:
+                if substring_weight > best_frag_score:
+                    best_frag_score = substring_weight
+                    best_frag = frag
+            else:
+                frag_words = set(frag.split()) - _SPLASH_STOP_WORDS
+                if frag_words:
+                    overlap = len(frag_words & words) / len(frag_words)
+                    word_score = overlap * word_overlap_weight
+                    if word_score > best_frag_score:
+                        best_frag_score = word_score
+                        best_frag = frag
+
+        if best_frag and best_frag_score > 0:
+            score += best_frag_score
+            matched.append(best_frag)
+
+    # Optical property matching
+    for prop_name, prop_value in vtype_data.get("optical", {}).items():
+        prop_words = set(prop_value.lower().replace('_', ' ').split())
+        prop_overlap = len(prop_words & words)
+        if prop_overlap > 0:
+            score += optical_weight * (prop_overlap / len(prop_words))
+            matched.append(f"optical:{prop_value}")
+
+    return score, matched
+
+
+def _splash_softmax(scores: Dict[str, float], temperature: float = 1.5) -> Dict[str, float]:
+    """Softmax with temperature over type scores."""
+    if not scores or max(scores.values()) == 0:
+        n = len(scores)
+        return {k: 1.0 / n for k in scores} if n > 0 else {}
+
+    max_s = max(scores.values())
+    exps = {k: math.exp((v - max_s) / temperature) for k, v in scores.items()}
+    total = sum(exps.values())
+    return {k: v / total for k, v in exps.items()}
+
+
+def _splash_blend_coordinates(weights: Dict[str, float]) -> Dict[str, float]:
+    """Weighted average of visual type centers."""
+    result = {p: 0.0 for p in SPLASH_PARAMETER_NAMES}
+    for vid, vdata in SPLASH_VISUAL_TYPES.items():
+        w = weights.get(vid, 0)
+        if w > 0:
+            for p in SPLASH_PARAMETER_NAMES:
+                result[p] += w * vdata["center"].get(p, 0)
+    return result
 
 
 # ============================================================================
@@ -1818,6 +1928,132 @@ def map_splash_parameters(
 # ============================================================================
 # DOMAIN REGISTRY HELPER
 # ============================================================================
+
+# ============================================================================
+# Phase 2.8: Aesthetic Decomposition (text → coordinates)
+# ============================================================================
+
+@mcp.tool()
+def decompose_splash_from_description(description: str) -> str:
+    """Decompose a text description into splash aesthetic coordinates.
+
+    LAYER 2: Deterministic keyword matching (0 LLM tokens).
+
+    Inverse of prompt generation: takes a text description (from Claude
+    vision output, user description, or any text describing a splash
+    aesthetic) and recovers the 5D splash coordinates by matching against
+    the visual vocabulary types.
+
+    Algorithm:
+      1. Tokenize description into words and full lowercase text
+      2. Score each visual type by keyword fragment matching + optical matching
+      3. Softmax scores → blending weights
+      4. Weighted average of visual type centers → 5D coordinates
+      5. Confidence = max_score / max_possible_score
+
+    This completes the round-trip:
+      coordinates → prompt → image → description → coordinates
+
+    Args:
+        description: Text describing a splash aesthetic. Can be a Claude
+            vision description of an image, a user's natural language
+            description, or generated prompt text. Longer, more specific
+            descriptions yield higher confidence and accuracy.
+
+    Returns:
+        JSON with:
+        - coordinates: 5D splash parameter values {impact_energy, ...}
+        - confidence: 0-1 detection strength (how much splash vocabulary found)
+        - nearest_type: Best-matching visual type ID
+        - nearest_type_distance: Euclidean distance from blend to nearest center
+        - type_scores: Raw match score per visual type
+        - type_weights: Softmax blending weights used
+        - matched_fragments: Which keyword fragments were found in text
+        - optical_matches: Which optical properties matched
+        - domain_detected: Whether confidence exceeds minimum threshold
+
+    Cost: 0 tokens (pure Layer 2 deterministic computation)
+
+    Example:
+        >>> decompose_splash_from_description(
+        ...     "frozen moment of milk droplet impact forming perfect crown, "
+        ...     "razor-sharp corona rim with satellite droplets"
+        ... )
+        {
+            "coordinates": {"impact_energy": 0.55, "temporal_freeze": 0.95, ...},
+            "confidence": 0.42,
+            "nearest_type": "frozen_crown",
+            "domain_detected": true
+        }
+    """
+    # Tokenize
+    lower = description.lower()
+    words = set(re.findall(r'[a-z]+(?:-[a-z]+)*', lower))
+
+    # Score each visual type
+    type_scores = {}
+    all_matched = []
+    optical_matches = {}
+
+    for vid, vdata in SPLASH_VISUAL_TYPES.items():
+        score, matched = _splash_score_visual_type(vdata, words, lower)
+        type_scores[vid] = score
+        all_matched.extend(matched)
+
+        # Collect optical matches
+        for m in matched:
+            if m.startswith("optical:"):
+                val = m.split(":", 1)[1]
+                for prop_name, prop_value in vdata.get("optical", {}).items():
+                    if prop_value == val:
+                        optical_matches[prop_name] = val
+
+    # Confidence
+    max_score = max(type_scores.values()) if type_scores else 0
+    # Max possible: 5 keywords × 1.0 + 3 optical × 0.5 = 6.5
+    max_possible = 5 * 1.0 + 3 * 0.5
+    confidence = min(1.0, max_score / max_possible) if max_possible > 0 else 0.0
+    min_threshold = 0.05
+
+    if confidence < min_threshold:
+        return json.dumps({
+            "coordinates": {p: 0.5 for p in SPLASH_PARAMETER_NAMES},
+            "confidence": 0.0,
+            "nearest_type": "",
+            "nearest_type_distance": None,
+            "type_scores": {k: round(v, 3) for k, v in type_scores.items()},
+            "type_weights": {},
+            "matched_fragments": [],
+            "optical_matches": {},
+            "domain_detected": False,
+        }, indent=2)
+
+    # Blend coordinates
+    weights = _splash_softmax(type_scores)
+    coordinates = _splash_blend_coordinates(weights)
+
+    # Find nearest visual type
+    nearest_type = max(type_scores, key=type_scores.get)
+    nearest_center = SPLASH_VISUAL_TYPES[nearest_type]["center"]
+    nearest_distance = _splash_euclidean_distance(coordinates, nearest_center)
+
+    # Deduplicate matched fragments (exclude optical/color prefixed ones for display)
+    unique_matched = list(dict.fromkeys(
+        m for m in all_matched if not m.startswith(("optical:", "color:"))
+    ))
+
+    return json.dumps({
+        "coordinates": {k: round(v, 4) for k, v in coordinates.items()},
+        "confidence": round(confidence, 4),
+        "nearest_type": nearest_type,
+        "nearest_type_distance": round(nearest_distance, 4),
+        "type_scores": {k: round(v, 3) for k, v in type_scores.items()},
+        "type_weights": {k: round(v, 4) for k, v in weights.items()},
+        "matched_fragments": unique_matched,
+        "optical_matches": optical_matches,
+        "domain_detected": True,
+    }, indent=2)
+
 
 @mcp.tool()
 def get_splash_domain_registry_config() -> str:
