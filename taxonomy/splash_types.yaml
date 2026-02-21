@@ -1,0 +1,229 @@
+# Splash Types Taxonomy
+# Layer 1: Pure classification (0 LLM tokens)
+# Physics-based morphological categories
+
+splash_types:
+  crown_splash:
+    name: "Crown Splash"
+    description: "Classic impact corona with radial symmetry"
+    physics:
+      velocity_range: [2.0, 10.0]  # m/s
+      optimal_velocity: 5.0
+      viscosity_range: [0.001, 0.1]  # Pa·s (water to light oil)
+      surface_tension_critical: true
+    morphology:
+      symmetry: "radial"
+      crown_height_ratio: [0.3, 0.8]  # relative to impact diameter
+      rim_thickness: "thin"
+      droplet_ejection: "radial_uniform"
+    visual_characteristics:
+      - "Circular corona"
+      - "Uniform radial jets"
+      - "Thin rim with droplets"
+      - "Vertical jet at center"
+    use_cases:
+      - "Product photography (beverages)"
+      - "Scientific visualization"
+      - "Clean geometric impact"
+    
+  sheet_splash:
+    name: "Sheet Splash"
+    description: "Thin spreading film with wave propagation"
+    physics:
+      velocity_range: [0.5, 3.0]
+      optimal_velocity: 1.5
+      viscosity_range: [0.001, 0.05]
+      surface_tension_critical: true
+    morphology:
+      symmetry: "radial_asymmetric"
+      spread_pattern: "expanding_sheet"
+      thickness: "very_thin"
+      edge_behavior: "fingering_instability"
+    visual_characteristics:
+      - "Translucent spreading film"
+      - "Wave-like propagation"
+      - "Fingering at edges"
+      - "Interference patterns"
+    use_cases:
+      - "Microscopic aesthetics"
+      - "Abstract patterns"
+      - "Delicate impact moments"
+      
+  jet_splash:
+    name: "Jet Splash"
+    description: "Upward columnar projection with droplet breakup"
+    physics:
+      velocity_range: [3.0, 15.0]
+      optimal_velocity: 7.0
+      viscosity_range: [0.001, 0.2]
+      surface_tension_critical: false
+    morphology:
+      symmetry: "axial"
+      jet_height_ratio: [1.0, 3.0]
+      breakup_mode: "droplet_cascade"
+      trajectory: "ballistic"
+    visual_characteristics:
+      - "Vertical column"
+      - "Droplet breakup cascade"
+      - "Ballistic trajectories"
+      - "High drama"
+    use_cases:
+      - "High-energy capture"
+      - "Action photography"
+      - "Dynamic moments"
+      
+  thrown_paint:
+    name: "Thrown Paint Gesture"
+    description: "High-viscosity gestural throw with directional bias"
+    physics:
+      velocity_range: [1.0, 8.0]
+      optimal_velocity: 4.0
+      viscosity_range: [0.1, 5.0]  # Paint to thick paste
+      surface_tension_critical: false
+    morphology:
+      symmetry: "asymmetric_directional"
+      strand_formation: "ligament_breakup"
+      trajectory_bias: "directional"
+      cohesion: "medium_to_high"
+    visual_characteristics:
+      - "Directional strands"
+      - "Viscous ligaments"
+      - "Expressive gesture"
+      - "Texture variation"
+    use_cases:
+      - "Abstract expressionism"
+      - "Fashion editorial (Nick Knight)"
+      - "Artistic gesture"
+      - "Paint splash portraits"
+      
+  arterial_spray:
+    name: "Arterial Spray Pattern"
+    description: "Pressurized directional spray with droplet distribution"
+    physics:
+      velocity_range: [5.0, 20.0]
+      optimal_velocity: 10.0
+      viscosity_range: [0.003, 0.01]  # Blood viscosity range
+      pressure_driven: true
+    morphology:
+      symmetry: "directional_cone"
+      droplet_distribution: "size_gradient"
+      trajectory_bias: "strong_directional"
+      spatter_pattern: "cast_off"
+    visual_characteristics:
+      - "Directional spray cone"
+      - "Size-graded droplets"
+      - "Velocity streaks"
+      - "Forensic pattern"
+    use_cases:
+      - "Horror/thriller aesthetics"
+      - "Crime scene visualization"
+      - "High-pressure fluid events"
+    
+  cascade_drip:
+    name: "Cascade Drip"
+    description: "Low-energy dripping with strand formation"
+    physics:
+      velocity_range: [0.1, 1.0]
+      optimal_velocity: 0.4
+      viscosity_range: [0.01, 10.0]
+      gravity_dominated: true
+    morphology:
+      symmetry: "vertical_asymmetric"
+      strand_formation: "continuous_ligament"
+      breakup_mode: "rayleigh_instability"
+      pooling: "accumulation"
+    visual_characteristics:
+      - "Vertical strands"
+      - "Beading along strand"
+      - "Pooling accumulation"
+      - "Languid motion"
+    use_cases:
+      - "Slow motion aesthetics"
+      - "Viscous materials (honey, syrup)"
+      - "Contemplative mood"
+      
+  explosive_burst:
+    name: "Explosive Burst"
+    description: "Omnidirectional high-energy fragmentation"
+    physics:
+      velocity_range: [10.0, 50.0]
+      optimal_velocity: 20.0
+      viscosity_range: [0.001, 0.5]
+      explosive_energy: true
+    morphology:
+      symmetry: "spherical_random"
+      fragmentation: "chaotic"
+      velocity_distribution: "wide"
+      trajectory_chaos: "high"
+    visual_characteristics:
+      - "Omnidirectional chaos"
+      - "Variable droplet sizes"
+      - "High velocity streaks"
+      - "Maximum energy"
+    use_cases:
+      - "Explosive moments"
+      - "Balloon pop"
+      - "Maximum drama"
+      - "Destruction aesthetics"
+
+# Intent keywords for Layer 2 classification
+intent_keywords:
+  crown_splash:
+    - "clean"
+    - "geometric"
+    - "radial"
+    - "symmetric"
+    - "beverage"
+    - "product"
+    - "drop"
+    
+  sheet_splash:
+    - "delicate"
+    - "spreading"
+    - "thin"
+    - "microscopic"
+    - "wave"
+    - "film"
+    
+  jet_splash:
+    - "upward"
+    - "column"
+    - "vertical"
+    - "fountain"
+    - "ballistic"
+    
+  thrown_paint:
+    - "paint"
+    - "throw"
+    - "gesture"
+    - "artistic"
+    - "nick knight"
+    - "fashion"
+    - "expressive"
+    
+  arterial_spray:
+    - "blood"
+    - "spray"
+    - "arterial"
+    - "forensic"
+    - "horror"
+    - "violent"
+    - "directional"
+    
+  cascade_drip:
+    - "drip"
+    - "dripping"
+    - "cascade"
+    - "honey"
+    - "syrup"
+    - "viscous"
+    - "slow"
+    
+  explosive_burst:
+    - "explosion"
+    - "burst"
+    - "shatter"
+    - "chaos"
+    - "omnidirectional"
+    - "balloon"
+    - "violent"
