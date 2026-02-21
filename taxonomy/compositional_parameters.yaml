@@ -1,0 +1,237 @@
+# Compositional Parameters Taxonomy
+# Layer 1: Pure visual parameter space (0 LLM tokens)
+
+color_contrast:
+  complementary_high:
+    name: "Complementary High Contrast"
+    description: "Opposite color wheel with high saturation"
+    examples:
+      - ["red", "cyan"]
+      - ["blue", "orange"]
+      - ["yellow", "purple"]
+      - ["green", "magenta"]
+    visual_effect: "Maximum visual impact, vibrant energy"
+    use_cases: ["Fashion editorial", "Product photography", "High drama"]
+    
+  analogous_harmony:
+    name: "Analogous Harmony"
+    description: "Adjacent color wheel positions"
+    examples:
+      - ["blue", "cyan", "teal"]
+      - ["red", "orange", "yellow"]
+      - ["purple", "magenta", "red"]
+    visual_effect: "Cohesive, flowing, natural progression"
+    use_cases: ["Elegant aesthetics", "Unified mood", "Subtle variation"]
+    
+  monochromatic_tonal:
+    name: "Monochromatic Tonal"
+    description: "Single hue with value variation"
+    examples:
+      - ["deep_red", "bright_red", "pink"]
+      - ["navy", "royal_blue", "sky_blue"]
+      - ["forest_green", "lime", "mint"]
+    visual_effect: "Sophisticated, focused, texture emphasis"
+    use_cases: ["Minimalist", "Texture focus", "Refined elegance"]
+    
+  black_white_pure:
+    name: "Black and White Pure"
+    description: "Achromatic contrast, form emphasis"
+    examples:
+      - ["black", "white"]
+      - ["charcoal", "cream"]
+    visual_effect: "Graphic, sculptural, timeless"
+    use_cases: ["High-speed capture", "Form study", "Classic elegance"]
+    
+  triadic_vibrant:
+    name: "Triadic Vibrant"
+    description: "Equidistant color wheel points"
+    examples:
+      - ["red", "yellow", "blue"]
+      - ["orange", "green", "purple"]
+    visual_effect: "Playful, balanced chaos, energetic"
+    use_cases: ["Dynamic composition", "Youthful energy", "Complex interaction"]
+
+density_distribution:
+  sparse_minimal:
+    name: "Sparse Minimal"
+    description: "Few isolated droplets with negative space"
+    coverage: "5-20%"
+    droplet_count: "low"
+    spacing: "wide"
+    visual_effect: "Delicate, precise, controlled"
+    compositional_weight: "light"
+    
+  balanced_medium:
+    name: "Balanced Medium"
+    description: "Even distribution with visible structure"
+    coverage: "30-50%"
+    droplet_count: "medium"
+    spacing: "regular"
+    visual_effect: "Harmonious, readable, structured"
+    compositional_weight: "medium"
+    
+  dense_saturated:
+    name: "Dense Saturated"
+    description: "Heavy coverage with overlapping elements"
+    coverage: "60-85%"
+    droplet_count: "high"
+    spacing: "tight"
+    visual_effect: "Intense, overwhelming, textural"
+    compositional_weight: "heavy"
+    
+  chaotic_explosive:
+    name: "Chaotic Explosive"
+    description: "Maximum density with overlapping chaos"
+    coverage: "70-100%"
+    droplet_count: "very_high"
+    spacing: "random_overlap"
+    visual_effect: "Violent, uncontrolled, maximum energy"
+    compositional_weight: "very_heavy"
+
+scale_hierarchy:
+  macro_intimate:
+    name: "Macro Intimate"
+    description: "Extreme close-up, droplet detail dominates"
+    focal_length: "90-200mm macro"
+    working_distance: "10-50cm"
+    depth_of_field: "very_shallow"
+    visible_elements: "Individual droplet structure, surface tension"
+    visual_effect: "Jewel-like, scientific, intimate detail"
+    
+  medium_portrait:
+    name: "Medium Portrait Scale"
+    description: "Splash interacting with subject, readable relationship"
+    focal_length: "50-85mm"
+    working_distance: "50-150cm"
+    depth_of_field: "selective"
+    visible_elements: "Subject + splash interaction, facial features + liquid"
+    visual_effect: "Fashion editorial, human scale, dramatic interaction"
+    
+  environmental_wide:
+    name: "Environmental Wide"
+    description: "Splash in context, environmental relationships"
+    focal_length: "24-35mm"
+    working_distance: "1-3m"
+    depth_of_field: "deep"
+    visible_elements: "Full scene, splash as element, spatial context"
+    visual_effect: "Cinematic, narrative context, scene setting"
+    
+  microscopic_abstract:
+    name: "Microscopic Abstract"
+    description: "Sub-millimeter detail, abstract pattern focus"
+    focal_length: "microscope/extreme_macro"
+    working_distance: "<5cm"
+    depth_of_field: "razor_thin"
+    visible_elements: "Molecular structure appearance, interference patterns"
+    visual_effect: "Scientific, otherworldly, pattern abstraction"
+
+directional_bias:
+  radial_symmetric:
+    name: "Radial Symmetric"
+    description: "Even distribution from center point"
+    vector_distribution: "360° equal"
+    symmetry: "perfect_radial"
+    visual_balance: "centered"
+    compositional_anchor: "central_impact"
+    
+  diagonal_dynamic:
+    name: "Diagonal Dynamic"
+    description: "Strong diagonal bias creating motion"
+    vector_distribution: "45° or 135° emphasis"
+    symmetry: "asymmetric"
+    visual_balance: "dynamic_tension"
+    compositional_anchor: "directional_flow"
+    
+  vertical_lift:
+    name: "Vertical Lift"
+    description: "Upward emphasis, anti-gravity feel"
+    vector_distribution: "0° (upward) emphasis"
+    symmetry: "vertical_bilateral"
+    visual_balance: "ascending"
+    compositional_anchor: "vertical_thrust"
+    
+  horizontal_sweep:
+    name: "Horizontal Sweep"
+    description: "Side-to-side motion, cinematic pan"
+    vector_distribution: "90° or 270° emphasis"
+    symmetry: "horizontal_bilateral"
+    visual_balance: "lateral_movement"
+    compositional_anchor: "sweep_direction"
+    
+  omnidirectional_chaos:
+    name: "Omnidirectional Chaos"
+    description: "No preferred direction, maximum entropy"
+    vector_distribution: "random_uniform"
+    symmetry: "asymmetric_random"
+    visual_balance: "unstable"
+    compositional_anchor: "none"
+
+opacity_translucency:
+  opaque_solid:
+    name: "Opaque Solid"
+    description: "Fully opaque liquid, color dominates"
+    light_transmission: "0%"
+    visual_priority: "color_saturation"
+    material_types: ["Paint", "Ink", "Blood", "Milk"]
+    effect: "Graphic, bold, color-focused"
+    
+  translucent_color:
+    name: "Translucent Color"
+    description: "Colored with light transmission"
+    light_transmission: "30-70%"
+    visual_priority: "color_glow"
+    material_types: ["Colored water", "Juice", "Dye solution"]
+    effect: "Luminous, glowing, layered depth"
+    
+  transparent_clear:
+    name: "Transparent Clear"
+    description: "Pure water-like clarity"
+    light_transmission: "90%+"
+    visual_priority: "form_refraction"
+    material_types: ["Water", "Alcohol", "Clear oil"]
+    effect: "Sculptural, form-focused, light-bending"
+    
+  mixed_layered:
+    name: "Mixed Layered Opacity"
+    description: "Variable opacity within splash"
+    light_transmission: "variable"
+    visual_priority: "complexity"
+    material_types: ["Emulsions", "Mixed media", "Particles suspended"]
+    effect: "Complex, textural, depth layers"
+
+motion_capture:
+  frozen_instant:
+    name: "Frozen Instant"
+    description: "Ultra-fast shutter, complete freeze"
+    shutter_speed: "1/2000s - 1/8000s"
+    motion_blur: "none"
+    temporal_slice: "instantaneous"
+    visual_effect: "Crystalline, suspended, geometric precision"
+    technical_notes: "High-speed flash typically required"
+    
+  slight_blur_energy:
+    name: "Slight Blur Energy"
+    description: "Visible motion while maintaining structure"
+    shutter_speed: "1/250s - 1/500s"
+    motion_blur: "minimal"
+    temporal_slice: "5-10ms integration"
+    visual_effect: "Dynamic but readable, kinetic energy"
+    technical_notes: "Natural light possible"
+    
+  motion_streaks:
+    name: "Motion Streaks"
+    description: "Droplet trajectories as light streaks"
+    shutter_speed: "1/30s - 1/125s"
+    motion_blur: "significant"
+    temporal_slice: "30-100ms integration"
+    visual_effect: "Velocity vectors visible, flow emphasis"
+    technical_notes: "Directional blur communicates motion"
+    
+  long_exposure_flow:
+    name: "Long Exposure Flow"
+    description: "Temporal accumulation, ghosting"
+    shutter_speed: "1/15s+"
+    motion_blur: "extreme"
+    temporal_slice: "multiple phases captured"
+    visual_effect: "Ethereal, flowing, time-stacked"
+    technical_notes: "Narrative sequence in single frame"

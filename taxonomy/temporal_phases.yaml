@@ -1,0 +1,156 @@
+# Temporal Phases Taxonomy
+# Layer 1: Pure temporal structure (0 LLM tokens)
+# Maps to catastrophe theory transformations
+
+temporal_phases:
+  pre_impact:
+    name: "Pre-Impact Trajectory"
+    description: "Fluid approaching surface before contact"
+    duration_typical: "10-50ms before impact"
+    energy_state: "kinetic_dominated"
+    visual_characteristics:
+      - "Coherent fluid mass"
+      - "Trajectory vector visible"
+      - "Anticipatory tension"
+      - "Surface undisturbed"
+    compositional_focus:
+      - "Directional motion blur"
+      - "Trajectory lines"
+      - "Target surface visible"
+    catastrophe_mapping: "fold_catastrophe"  # Smooth → singular
+    
+  impact_moment:
+    name: "Impact Moment"
+    description: "Initial contact and energy transfer"
+    duration_typical: "0-5ms"
+    energy_state: "maximum_conversion"
+    visual_characteristics:
+      - "First contact point"
+      - "Shock wave formation"
+      - "Energy concentration"
+      - "Maximum compression"
+    compositional_focus:
+      - "Radial symmetry emergence"
+      - "Contact point bright highlight"
+      - "Surface deformation"
+    catastrophe_mapping: "cusp_catastrophe"  # Bifurcation point
+    
+  crown_formation:
+    name: "Crown Formation"
+    description: "Radial expansion and vertical structure emergence"
+    duration_typical: "5-20ms"
+    energy_state: "expansion_phase"
+    visual_characteristics:
+      - "Corona developing"
+      - "Vertical jets forming"
+      - "Rim crystallization"
+      - "Radial symmetry"
+    compositional_focus:
+      - "Crown geometry"
+      - "Rim droplet spacing"
+      - "Vertical extent"
+      - "Structural elegance"
+    catastrophe_mapping: "butterfly_catastrophe"  # Multiple paths
+    
+  droplet_ejection:
+    name: "Droplet Ejection"
+    description: "Secondary droplets separating and following ballistic paths"
+    duration_typical: "20-100ms"
+    energy_state: "fragmentation"
+    visual_characteristics:
+      - "Discrete droplet formation"
+      - "Ballistic trajectories"
+      - "Size distribution"
+      - "Velocity gradient"
+    compositional_focus:
+      - "Droplet scatter pattern"
+      - "Trajectory vectors"
+      - "Depth field"
+      - "Motion freezing"
+    catastrophe_mapping: "swallowtail_catastrophe"  # Multiple outcomes
+    
+  secondary_splash:
+    name: "Secondary Splash Events"
+    description: "Ejected droplets creating new impacts"
+    duration_typical: "100-500ms"
+    energy_state: "cascade_decay"
+    visual_characteristics:
+      - "Multiple impact points"
+      - "Smaller scale splashes"
+      - "Recursive patterns"
+      - "Diminishing energy"
+    compositional_focus:
+      - "Nested splash hierarchy"
+      - "Scale relationships"
+      - "Fractal-like patterns"
+    catastrophe_mapping: "fold_catastrophe"  # Recursive
+    
+  settling_phase:
+    name: "Settling and Drip"
+    description: "Gravity-driven return to equilibrium"
+    duration_typical: "0.5-5 seconds"
+    energy_state: "dissipation"
+    visual_characteristics:
+      - "Vertical drainage"
+      - "Strand formation"
+      - "Pooling"
+      - "Surface tension effects"
+    compositional_focus:
+      - "Vertical flow lines"
+      - "Accumulation patterns"
+      - "Residual structure"
+      - "Equilibrium approach"
+    catastrophe_mapping: "fold_catastrophe"  # Return to stable
+
+# Temporal sequences for narrative composition
+temporal_sequences:
+  complete_splash_story:
+    name: "Complete Splash Narrative"
+    phases: ["pre_impact", "impact_moment", "crown_formation", "droplet_ejection", "settling_phase"]
+    total_duration: "50ms-5s"
+    narrative_arc: "buildup → climax → resolution"
+    
+  frozen_moment:
+    name: "Single Frozen Instant"
+    phases: ["crown_formation"]  # Most common freeze point
+    duration: "instantaneous"
+    narrative_arc: "suspended climax"
+    
+  impact_to_ejection:
+    name: "Primary Event Sequence"
+    phases: ["impact_moment", "crown_formation", "droplet_ejection"]
+    duration: "5-100ms"
+    narrative_arc: "action sequence"
+    
+  cascade_sequence:
+    name: "Recursive Cascade"
+    phases: ["droplet_ejection", "secondary_splash", "settling_phase"]
+    duration: "100ms-5s"
+    narrative_arc: "diminishing echoes"
+
+# Phase emphasis for compositional intent
+phase_emphasis:
+  high_energy:
+    primary_phase: "impact_moment"
+    secondary_phase: "crown_formation"
+    avoid_phases: ["settling_phase"]
+    
+  geometric_beauty:
+    primary_phase: "crown_formation"
+    secondary_phase: "droplet_ejection"
+    avoid_phases: ["pre_impact"]
+    
+  contemplative:
+    primary_phase: "settling_phase"
+    secondary_phase: "cascade_drip"
+    avoid_phases: ["impact_moment"]
+    
+  chaotic_energy:
+    primary_phase: "droplet_ejection"
+    secondary_phase: "secondary_splash"
+    avoid_phases: ["crown_formation"]  # Avoid order
+    
+  anticipation:
+    primary_phase: "pre_impact"
+    secondary_phase: "impact_moment"
+    avoid_phases: ["settling_phase"]
